@@ -1,0 +1,4 @@
+obj/*.lst
+obj/*.o
+defender-debug.lst
+defender.elf
