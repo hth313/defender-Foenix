@@ -3,11 +3,11 @@ VPATH = src
 FOENIX = module/Calypsi-65816-Foenix
 
 # Common source files
-ASM_SRCS =
-C_SRCS = foo.c images.c statemachine.c starship.c signal.c
+ASM_SRCS = test.s
+C_SRCS = foo.c images.c # statemachine.c starship.c signal.c
 
-MODEL = --code-model=large --data-model=small
-LIB_MODEL = lc-sd
+MODEL = --code-model=large --data-model=medium
+LIB_MODEL = lc-md
 INCLUDE = -I$(FOENIX)/include
 
 FOENIX_LIB = $(FOENIX)/Foenix-$(LIB_MODEL).a
@@ -30,10 +30,10 @@ obj/%-debug.o: %.c
 	cc65816 --core=65816 $(MODEL) $(INCLUDE) --always-inline --target=Foenix --debug --list-file=$(@:%.o=%.lst) -o $@ $<
 
 defender.elf: $(OBJS_DEBUG) $(FOENIX_LIB)
-	ln65816 --debug -o $@ $^ $(FOENIX_LINKER_RULES) clib-$(LIB_MODEL).a --list-file=defender-debug.lst --cross-reference --rtattr printf=reduced --rtattr cstartup=Foenix --semi-hosted --target=Foenix --heap-size=0
+	ln65816 --debug -o $@ $^ $(FOENIX_LINKER_RULES) clib-$(LIB_MODEL).a --list-file=defender-debug.lst --cross-reference --rtattr printf=reduced --rtattr cstartup=Foenix --semi-hosted --target=Foenix --heap-size=0 --copy-initialize vram
 
 defender.pgz:  $(OBJS) $(FOENIX_LIB)
-	ln65816 -o $@ $^ $(FOENIX_LINKER_RULES) clib-$(LIB_MODEL)-Foenix.a --output-format=pgz --list-file=defender-Foenix.lst --cross-reference --rtattr printf=reduced --rtattr cstartup=Foenix --target=Foenix --heap-size=0
+	ln65816 -o $@ $^ $(FOENIX_LINKER_RULES) clib-$(LIB_MODEL)-Foenix.a --output-format=pgz --list-file=defender-Foenix.lst --cross-reference --rtattr printf=reduced --rtattr cstartup=Foenix --target=Foenix --heap-size=0 --copy-initialize vram
 
 $(FOENIX_LIB):
 	(cd $(FOENIX) ; make all)
