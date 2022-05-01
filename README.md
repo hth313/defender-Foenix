@@ -7,4 +7,4 @@ It is basically a playground where a simple game engine prototype is
 intermixed with the actual game code.
 
 The Calypsi-65816-Foenix board support package is used for C256 specific
-definitions with the Calyspi C compiler.
+definitions with the [Calypsi C compiler](https://www.calypsi.cc/).
